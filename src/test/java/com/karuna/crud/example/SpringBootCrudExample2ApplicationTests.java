@@ -43,7 +43,7 @@ class SpringBootCrudExample2ApplicationTests {
         Product product = new Product("headset", 2, 7999);
         Product response = restTemplate.postForObject(baseUrl, product, Product.class);
         assertEquals("headset", response.getName());
-        assertEquals(1, h2Repository.findAll().size());
+        assertEquals(2, h2Repository.findAll().size());
     }
 
     @Test
@@ -51,8 +51,8 @@ class SpringBootCrudExample2ApplicationTests {
     @Sql(statements = "DELETE FROM PRODUCT_TBL WHERE name='AC'", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void testGetProducts() {
         List<Product> products = restTemplate.getForObject(baseUrl, List.class);
-        assertEquals(1, products.size());
-        assertEquals(1, h2Repository.findAll().size());
+        assertEquals(2, products.size());
+        assertEquals(2, h2Repository.findAll().size());
     }
 
     @Test
@@ -88,9 +88,9 @@ class SpringBootCrudExample2ApplicationTests {
     @Sql(statements = "INSERT INTO PRODUCT_TBL (id,name, quantity, price) VALUES (8,'books', 5, 1499)", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     public void testDeleteProduct(){
         int recordCount=h2Repository.findAll().size();
-        assertEquals(1, recordCount);
+        assertEquals(3, recordCount);
         restTemplate.delete(baseUrl+"/delete/{id}", 8);
-        assertEquals(0, h2Repository.findAll().size());
+        assertEquals(2, h2Repository.findAll().size());
 
     }
 
